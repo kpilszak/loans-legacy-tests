@@ -1,5 +1,7 @@
 package com.kpilszak.loanslegacytests;
 
+import org.springframework.web.client.RestTemplate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +18,11 @@ public class LoanApplication {
     private int termInMonths;
     private BigDecimal repayment;
     private Boolean approved;
+
+    public BigDecimal getInterestRate() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject("http://loans.virtualpairprogrammers.com/getInterestRate", BigDecimal.class);
+    }
 
     public int getId() {
         return id;
@@ -64,4 +71,5 @@ public class LoanApplication {
     public void setApproved(Boolean approved) {
         this.approved = approved;
     }
+
 }
