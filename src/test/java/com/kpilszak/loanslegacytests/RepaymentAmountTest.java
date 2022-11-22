@@ -3,13 +3,15 @@ package com.kpilszak.loanslegacytests;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 public class RepaymentAmountTest {
 
     @Test
-    public void test() {
-        fail();
-    }
+    public void test1YearLoanWholePounds() {}
+
+    @Test
+    public void test2YearLoanWholePounds() {}
+
+    @Test
+    public void test5YearLoanWithRounding() {}
 
 }
