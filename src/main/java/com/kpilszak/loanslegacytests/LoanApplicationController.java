@@ -54,4 +54,17 @@ public class LoanApplicationController {
         return new ModelAndView("requestAccepted");
     }
 
+    // Set methods used for tests only
+    public void setRepository(LoanApplicationRepository repository) {
+        this.repository = repository;
+    }
+
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
 }
