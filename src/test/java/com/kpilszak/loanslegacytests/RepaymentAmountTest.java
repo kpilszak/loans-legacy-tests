@@ -1,5 +1,6 @@
 package com.kpilszak.loanslegacytests;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,21 +16,27 @@ public class RepaymentAmountTest {
     @Spy
     LoanApplication loanApplication;
 
-    @Test
-    public void test1YearLoanWholePounds() {
+    LoanApplicationController controller;
+
+    @BeforeEach
+    public void setup() {
         loanApplication = spy (new LoanApplication());
-        loanApplication.setPrincipal(1200);
-        loanApplication.setTermInMonths(12);
-        doReturn(new BigDecimal(10)).when(loanApplication).getInterestRate();
+        controller = new LoanApplicationController();
 
         LoanApplicationRepository repository = mock(LoanApplicationRepository.class);
         JavaMailSender mailSender = mock(JavaMailSender.class);
         RestTemplate restTemplate = mock(RestTemplate.class);
 
-        LoanApplicationController controller = new LoanApplicationController();
         controller.setRepository(repository);
         controller.setMailSender(mailSender);
         controller.setRestTemplate(restTemplate);
+    }
+
+    @Test
+    public void test1YearLoanWholePounds() {
+        loanApplication.setPrincipal(1200);
+        loanApplication.setTermInMonths(12);
+        doReturn(new BigDecimal(10)).when(loanApplication).getInterestRate();
 
         controller.processNewLoanApplicationForm(loanApplication);
 
@@ -37,7 +44,15 @@ public class RepaymentAmountTest {
     }
 
     @Test
-    public void test2YearLoanWholePounds() {}
+    public void test2YearLoanWholePounds() {
+        loanApplication.setPrincipal(1200);
+        loanApplication.setTermInMonths(24);
+        doReturn(new BigDecimal(10)).when(loanApplication).getInterestRate();
+
+        controller.processNewLoanApplicationForm(loanApplication);
+
+        assertEquals(new BigDecimal(60), loanApplication.getRepayment());
+    }
 
     @Test
     public void test5YearLoanWithRounding() {}

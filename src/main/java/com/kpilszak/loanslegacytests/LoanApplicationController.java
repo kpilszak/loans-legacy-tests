@@ -36,11 +36,12 @@ public class LoanApplicationController {
 
         URI location = restTemplate.postForLocation("http://localhost/loanApplication", loanApplication);
 
-        BigDecimal applicableRate = loanApplication.getInterestRate().divide(new BigDecimal(100));
+        BigDecimal applicableRate = loanApplication.getInterestRate()
+                .multiply(new BigDecimal(loanApplication.getTermInMonths()))
+                .divide(new BigDecimal(1200));
         applicableRate = applicableRate.add(new BigDecimal(1));
 
-        BigDecimal totalRepayable = new BigDecimal(loanApplication.getPrincipal()
-                * Double.parseDouble(applicableRate.toString()) * loanApplication.getTermInMonths() / 12);
+        BigDecimal totalRepayable = new BigDecimal(loanApplication.getPrincipal() * Double.parseDouble(applicableRate.toString()));
         BigDecimal repayment = totalRepayable.divide(new BigDecimal("" + loanApplication.getTermInMonths()),
                 RoundingMode.UP);
         loanApplication.setRepayment(repayment);
