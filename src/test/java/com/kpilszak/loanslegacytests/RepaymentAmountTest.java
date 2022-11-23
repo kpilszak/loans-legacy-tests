@@ -55,6 +55,14 @@ public class RepaymentAmountTest {
     }
 
     @Test
-    public void test5YearLoanWithRounding() {}
+    public void test5YearLoanWithRounding() {
+        loanApplication.setPrincipal(5000);
+        loanApplication.setTermInMonths(60);
+        doReturn(new BigDecimal(6.5)).when(loanApplication).getInterestRate();
+
+        controller.processNewLoanApplicationForm(loanApplication);
+
+        assertEquals(new BigDecimal(111), loanApplication.getRepayment());
+    }
 
 }
